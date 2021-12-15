@@ -3,7 +3,10 @@ public class Square {
     int bombsAdjacent;
     boolean isBomb;
 
-    public Square(){}
+    public Square(){
+        isBomb = false;
+        bombsAdjacent = 0;
+    }
 
     public void setBomb(boolean bomb) {
         isBomb = bomb;
@@ -16,7 +19,6 @@ public class Square {
     public int getBombsAdjacent() {
         return bombsAdjacent;
     }
-
 
     @Override
     public String toString(){
