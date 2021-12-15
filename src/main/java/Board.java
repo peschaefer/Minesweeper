@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Board {
     private final int numberOfBombs;
@@ -20,6 +21,7 @@ public class Board {
         initializeSquareMatrix();
         generateBombCoordinates();
         assignBombs();
+        assignBombsAdjacent();
     }
 
     private void generateDisallowedPlacements(){
@@ -74,26 +76,79 @@ public class Board {
         }
     }
 
+    private void assignBombsAdjacent() {
+        int currentX,currentY;
+        for(String coordinate : bombCoordinates){
+            currentX = Integer.parseInt(coordinate.split(",")[0]);
+            currentY = Integer.parseInt(coordinate.split(",")[1]);
+            for(int i = -1; i < 2;i++){
+                for(int j = -1; j < 2; j++){
+                    try {
+                        if (squareMatrix[currentX + i][currentY + j].isBomb) {
+                            continue;
+                        }
+                        squareMatrix[currentX + i][currentY + j].incrementBombsAdjacent();
+                    } catch(Exception ignored){}
+                }
+            }
+        }
+    }
+
     public void printCoordinates(){
         System.out.println(bombCoordinates);
     }
 
-
     public void printBoard(){
+        String dashes ="-----".repeat(boardSize);
+        dashes = dashes.substring(0, dashes.length()-(int)(boardSize*.8));
+        System.out.println("\n" + dashes);
         for(Square[] squareRow : squareMatrix){
+            System.out.print("|");
             for (Square square : squareRow){
-                if(square.isBomb){
-                    System.out.print("1-");
-                }
-                else{
-                    System.out.print("0-");
-                }
+                System.out.print(" " + square.symbol + " |");
             }
-            System.out.println();
+            System.out.println("\n" + dashes);
         }
     }
 
     public Square[][] getSquareMatrix(){
         return squareMatrix;
+    }
+
+    public void reveal(int x, int y){
+        if(squareMatrix[x][y].showing){
+            return;
+        }
+        if(squareMatrix[x][y].bombsAdjacent != 0){
+            squareMatrix[x][y].show();
+            return;
+        }
+        if (squareMatrix[x][y].bombsAdjacent == 0){
+            for(int i = -1; i < 2; i++){
+                for (int j = -1; j < 2; j++){
+                    try {
+                        squareMatrix[x][y].show();
+                        reveal(x + i, y + j);
+                    } catch(Exception ignored){}
+                }
+            }
+        }
+    }
+
+    public void printCheatSheet() {
+        String dashes ="-----".repeat(boardSize);
+        dashes = dashes.substring(0, dashes.length()-(int)(boardSize*.8));
+        System.out.println("\n" + dashes);
+        for(Square[] squareRow : squareMatrix){
+            System.out.print("|");
+            for (Square square : squareRow){
+                if(square.isBomb){
+                    System.out.print(" X |");
+                }else {
+                    System.out.print(" " + square.bombsAdjacent + " |");
+                }
+            }
+            System.out.println("\n" + dashes);
+        }
     }
 }

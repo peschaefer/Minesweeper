@@ -2,22 +2,21 @@ public class Square {
 
     int bombsAdjacent;
     boolean isBomb;
+    boolean showing = false;
+    String symbol = "?";
 
     public Square(){
         isBomb = false;
         bombsAdjacent = 0;
     }
 
-    public void setBomb(boolean bomb) {
-        isBomb = bomb;
+    public void incrementBombsAdjacent(){
+        bombsAdjacent++;
     }
 
-    public void setBombsAdjacent(int bombsAdjacent){
-        this.bombsAdjacent = bombsAdjacent;
-    }
-
-    public int getBombsAdjacent() {
-        return bombsAdjacent;
+    public void show(){
+        showing = true;
+        symbol = String.valueOf(bombsAdjacent);
     }
 
     @Override
