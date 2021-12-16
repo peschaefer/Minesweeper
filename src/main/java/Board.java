@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 
 public class Board {
     private final int numberOfBombs;
@@ -94,9 +93,9 @@ public class Board {
         }
     }
 
-    public void printCoordinates(){
-        System.out.println(bombCoordinates);
-    }
+//    public void printCoordinates(){
+//        System.out.println(bombCoordinates);
+//    }
 
     public void printBoard(){
         String dashes ="-----".repeat(boardSize);
@@ -136,16 +135,22 @@ public class Board {
     }
 
     public void printCheatSheet() {
+        boolean showing;
         String dashes ="-----".repeat(boardSize);
         dashes = dashes.substring(0, dashes.length()-(int)(boardSize*.8));
         System.out.println("\n" + dashes);
         for(Square[] squareRow : squareMatrix){
             System.out.print("|");
             for (Square square : squareRow){
+                showing = square.showing;
+                square.show();
                 if(square.isBomb){
-                    System.out.print(" X |");
+                    System.out.print("\u001B[31m X "+ "\u001B[0m|");
                 }else {
-                    System.out.print(" " + square.bombsAdjacent + " |");
+                    System.out.print(" " + square.symbol + " |");
+                }
+                if(!showing) {
+                    square.hide();
                 }
             }
             System.out.println("\n" + dashes);
