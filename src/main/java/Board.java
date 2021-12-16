@@ -98,15 +98,29 @@ public class Board {
 //    }
 
     public void printBoard(){
-        String dashes ="-----".repeat(boardSize);
-        dashes = dashes.substring(0, dashes.length()-(int)(boardSize*.8));
+        int row = 0;
+        String dashes ="  " + "+---".repeat(boardSize) + "+";
+        //dashes = dashes.substring(0, dashes.length()-(int)(boardSize*.8));
+        printColumnNumbers();
         System.out.println("\n" + dashes);
         for(Square[] squareRow : squareMatrix){
-            System.out.print("|");
+            System.out.print(row + " |");
+            row++;
             for (Square square : squareRow){
                 System.out.print(" " + square.symbol + " |");
             }
             System.out.println("\n" + dashes);
+        }
+    }
+
+    public void printColumnNumbers() {
+        System.out.print("    ");
+        for(int i = 0; i < boardSize; i++){
+            if(String.valueOf(i+1).length() == 1) {
+                System.out.print(i + "   ");
+            } else{
+                System.out.print(i + "  ");
+            }
         }
     }
 
@@ -136,8 +150,8 @@ public class Board {
 
     public void printCheatSheet() {
         boolean showing;
-        String dashes ="-----".repeat(boardSize);
-        dashes = dashes.substring(0, dashes.length()-(int)(boardSize*.8));
+        String dashes ="+---".repeat(boardSize) + "+";
+        //dashes = dashes.substring(0, dashes.length()-(int)(boardSize*.8));
         System.out.println("\n" + dashes);
         for(Square[] squareRow : squareMatrix){
             System.out.print("|");

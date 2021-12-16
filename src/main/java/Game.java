@@ -3,6 +3,7 @@ import java.util.Scanner;
 public class Game {
 
     Scanner scanner = new Scanner(System.in);
+    Board board;
 
     public void play(){
         System.out.println("Enter the size of the board:");
@@ -12,7 +13,7 @@ public class Game {
         printFakeBoard(boardSize);
         System.out.println("Enter your starting position in the style of 0,0:");
         String position = scanner.next();
-        Board board = new Board(boardSize,numberOfBombs,position);
+        board = new Board(boardSize,numberOfBombs,position);
         int x = Integer.parseInt(position.split(",")[0]);
         int y = Integer.parseInt(position.split(",")[1]);
         board.reveal(x,y);
@@ -31,7 +32,7 @@ public class Game {
             x = Integer.parseInt(position.split(",")[0]);
             y = Integer.parseInt(position.split(",")[1]);
             if(board.getSquareMatrix()[x][y].isBomb){
-                System.out.println("Boom!");
+                System.err.println("Boom!");
                 board.printCheatSheet();
                 break;
             }
@@ -41,15 +42,27 @@ public class Game {
     }
 
     private void printFakeBoard(int boardSize) {
-        String dashes ="-----".repeat(boardSize);
-        dashes = dashes.substring(0, dashes.length()-(int)(boardSize*.8));
+        printColumnNumbers(boardSize);
+        String dashes ="  " + "+---".repeat(boardSize) + "+";
         System.out.println(dashes);
         for(int i = 0; i < boardSize; i++){
-            System.out.print("|");
+            System.out.print(i + " |");
             for (int j = 0; j < boardSize; j++){
                 System.out.print(" ? |");
             }
             System.out.println("\n" + dashes);
         }
+    }
+
+    public void printColumnNumbers(int boardSize){
+        System.out.print("    ");
+        for(int i = 0; i < boardSize; i++){
+            if(String.valueOf(i+1).length() == 1) {
+                System.out.print(i + "   ");
+            } else{
+                System.out.print(i + "  ");
+            }
+        }
+        System.out.println();
     }
 }
