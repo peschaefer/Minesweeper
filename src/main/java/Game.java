@@ -4,12 +4,13 @@ public class Game {
 
     Scanner scanner = new Scanner(System.in);
     Board board;
+    int numberOfBombs;
 
     public void play(){
         System.out.println("Enter the size of the board:");
         int boardSize = Integer.parseInt(scanner.next());
         System.out.println("Enter the number of bombs:");
-        int numberOfBombs = Integer.parseInt(scanner.next());
+        numberOfBombs = Integer.parseInt(scanner.next());
         printFakeBoard(boardSize);
         System.out.println("Enter your starting position in the style of 0,0:");
         String position = scanner.next();
@@ -27,6 +28,7 @@ public class Game {
                 y = Integer.parseInt(position.split(",")[1]);
                 board.getSquareMatrix()[x][y].flag();
                 board.printBoard();
+                checkForComplete();
                 continue;
             }
             x = Integer.parseInt(position.split(",")[0]);
@@ -38,6 +40,15 @@ public class Game {
             }
             board.reveal(x,y);
             board.printBoard();
+            checkForComplete();
+        }
+    }
+
+    private void checkForComplete() {
+        Square square = new Square();
+        if(square.getSpacesFlagged() == numberOfBombs && square.isCorrect() && board.allClear()){
+            System.out.println("You cleared all mines!");
+            System.exit(0);
         }
     }
 

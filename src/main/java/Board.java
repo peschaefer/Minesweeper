@@ -170,4 +170,15 @@ public class Board {
             System.out.println("\n" + dashes);
         }
     }
+
+    public boolean allClear(){
+        for(Square[] squareRow : squareMatrix){
+            for(Square square : squareRow){
+                if(!square.showing && !square.flagged){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }
